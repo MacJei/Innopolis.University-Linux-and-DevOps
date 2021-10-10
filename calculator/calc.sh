@@ -4,7 +4,7 @@ FILE_2="$2"
 if [[ -z $FILE_1 ]]; then
 	echo "Параметры не указаны"
 	echo "Пожалуйста, передайте один или два файла с арифметическим выражением, например:"
-	echo "./calc.sh file1.txt file2.txt"
+	echo " sh ./calc.sh file1.txt file2.txt"
 else
 	result_1=$(($(cat "$FILE_1")))
 	if [[ ! -z "$FILE_2" ]]; then
