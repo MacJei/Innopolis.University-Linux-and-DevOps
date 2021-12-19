@@ -19,7 +19,9 @@
 $>./backupctl.py --directory /tmp/mydir --output /home/user/alex/ -a zip -jjournal.csv/home/user/alex/mydir_2020-09-12_04:06:34.zip
 
 Ожидаемый результат в ФС:
+
 1 - создался архив
+
 2 - пополнились записи в файле journal.csv
 
 Разрешается использовать как стандартные так и сторонние модули(например click, fire, docopt).
