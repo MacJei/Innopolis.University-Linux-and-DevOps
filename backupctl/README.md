@@ -38,5 +38,5 @@ $>./backupctl.py --directory /tmp/mydir --output /home/user/alex/ -a zip -jjourn
 ---------------------------------------------------------------------------------------------------------------------------------
 ## Запуск 
 ```
-./backupctl.py -d /home/ako/innopolis/game -o /home/ako/innopolis/backupctl -j journal.csv>
+./backupctl.py -d /home/ako/innopolis/game -o /home/ako/innopolis/backupctl -j journal.csv
 ```
