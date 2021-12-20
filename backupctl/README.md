@@ -16,6 +16,7 @@
 информацию о томкак пользоваться вашей программой.
 
 Ожидаемый пример использования программы:
+
 $>./backupctl.py --directory /tmp/mydir --output /home/user/alex/ -a zip -jjournal.csv/home/user/alex/mydir_2020-09-12_04:06:34.zip
 
 Ожидаемый результат в ФС:
@@ -36,4 +37,6 @@ $>./backupctl.py --directory /tmp/mydir --output /home/user/alex/ -a zip -jjourn
 
 ---------------------------------------------------------------------------------------------------------------------------------
 ## Запуск 
-./backupctl.py -d /home/ako/innopolis/game -o /home/ako/innopolis/backupctl -j journal.csv
+```
+./backupctl.py -d /home/ako/innopolis/game -o /home/ako/innopolis/backupctl -j journal.csv>
+```
