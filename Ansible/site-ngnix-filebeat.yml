@@ -1,0 +1,11 @@
+# sudo ansible-playbook -i elastic.hosts site-ngnix-filebeat.yml
+---
+#
+# Playbook для установки filebeat
+#
+- hosts: filebeat
+  become: yes
+  roles:
+    - role: elastic_stack
+    - role: nginx
+    - role: filebeat
