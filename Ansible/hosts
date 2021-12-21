@@ -1,0 +1,15 @@
+[headnode]
+instance-1
+
+[node2]
+instance-2
+
+[node3]
+instance-3
+
+[elkhead]
+instance-1
+
+[elknodes]
+instance-2
+instance-3
