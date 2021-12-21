@@ -1,0 +1,84 @@
+---
+#
+# Logstash
+#
+
+# Установка Logstash
+
+- name: Install Logstash
+  apt:
+   name: logstash
+   update_cache: yes
+
+# Конфигурация хоста
+
+- name: Updating the config file to allow outside access
+  lineinfile:
+   destfile: /etc/logstash/logstash.yml
+   regexp: 'http.host:'
+   line: 'http.host: 0.0.0.0'
+
+
+# Установка плагина Kafka
+
+- name: Install Logstash Kafka input plugin
+  logstash_plugin:
+   state: present
+   name: logstash-input-kafka
+
+# prune filter plugin
+- name: Install Logstash logstash-filter-prune
+  logstash_plugin:
+    state: present
+    name: logstash-filter-prune
+
+#- environment:
+#PATH: "{{ ansible_env.PATH }}:/usr/share/logstash/vendor/jruby/bin"
+
+# Clichouse output plugin
+# Download
+- git:
+    repo: 'https://github.com/funcmike/logstash-output-clickhouse'
+    dest: /home/ubuntu/logstash-output-clickhouse
+    update: no
+
+# build
+#
+- name: build the logstash-output-clickhouse gem
+  shell: gem build logstash-output-clickhouse.gemspec
+  args:
+    chdir: /home/ubuntu/logstash-output-clickhouse
+    creates: logstash-output-clickhouse-0.1.0.gem
+
+# Check
+#
+- name: Check installed logstash-output-clickhouse 
+  shell: /usr/share/logstash/bin/logstash-plugin list | grep logstash-output-clickhouse
+  register: check_plugin
+  ignore_errors: true
+
+- debug:
+    msg: check_plugin.stdout
+#- set_fact:
+#     logstash_output_clickhouse_installed: true
+#  when: check_plugin.stdout != ""
+
+#  when: x is not defined
+
+#
+# Install
+#
+- name: Install logstash-output-clickhouse gem
+  shell: /usr/share/logstash/bin/logstash-plugin install logstash-output-clickhouse-0.1.0.gem
+  args:
+    chdir: /home/ubuntu/logstash-output-clickhouse
+  when: check_plugin.stdout == ""
+
+#  when: not ansible_facts['logstash_output_clickhouse_installed']
+
+# Запуск Logstash
+
+- name: Starting Logstash
+  service:
+   name: logstash
+   state: started
