@@ -1,0 +1,99 @@
+---
+#
+# Установка Elasticsearch
+#
+
+# Добавление Elasticsearch apt key
+
+- name: Add Elasticsearch apt key
+  apt_key:
+   url: "https://packages.elastic.co/GPG-KEY-elasticsearch"
+   state: present
+
+# Добавление Elasticsearch apt repo.
+
+- name: Adding Elasticsearch repo
+  apt_repository:
+   repo: deb https://artifacts.elastic.co/packages/6.x/apt stable main
+   state: present
+
+# Установка Elasticsearch
+
+- name: Install Elasticsearch
+  apt:
+   name: elasticsearch
+   update_cache: yes
+   
+# Конфигурация хоста
+
+- name: Updating the config file to allow outside access
+  lineinfile:
+   destfile: /etc/elasticsearch/elasticsearch.yml
+   regexp: 'network.host:'
+   line: 'network.host: 0.0.0.0'
+ 
+# Конфигурация порта
+
+- name: Updating the port in config file 
+  lineinfile:
+   destfile: /etc/elasticsearch/elasticsearch.yml
+   regexp: 'http.port:'
+   line: 'http.port: 9200'
+
+# Файл для unicast discovery
+- name: Copy cluster file to all nodes
+  copy:
+   src: cluster1
+   dest: /etc/elasticsearch/unicast_hosts.txt
+   owner: root
+   group: elasticsearch
+   mode: '0664'
+
+# Конфигурация discovery кластера
+- name: Adding seed.provider file option in config file
+  lineinfile:
+   destfile: /etc/elasticsearch/elasticsearch.yml
+#   regexp: 'discovery.zen.ping.unicast.hosts'
+   insertafter: 'discovery.zen.ping.unicast.hosts'
+   line: 'discovery.zen.hosts_provider: file'
+
+# Конфигурация названия кластера
+- name: Setting cluster name
+  lineinfile:
+   destfile: /etc/elasticsearch/elasticsearch.yml
+   regexp: 'cluster\.name'
+   line: 'cluster.name: cluster1'
+
+# Конфигурация названия узла
+- name: Setting node name
+  lineinfile:
+   destfile: /etc/elasticsearch/elasticsearch.yml
+   regexp: 'node\.name'
+   line: 'node.name: {{inventory_hostname}}'
+
+
+# Изменение атрибутов доступа к конф- и лог-директориям
+
+- name: Updating o+r permissions on log, config dir 
+  file:
+   path: "{{ item }}"
+   mode: o+x
+  with_items:
+   - /etc/elasticsearch
+   - /var/log/elasticsearch
+
+- name: Updating o+r permissions on log, config files
+  file:
+   path: "{{ item }}"
+   mode: o+r
+   recurse: yes
+  with_items:
+   - /etc/elasticsearch
+   - /var/log/elasticsearch
+
+# запуск Elasticsearch
+- name: Starting Elasticsearch
+  service:
+   name: elasticsearch
+   state: started
+    
