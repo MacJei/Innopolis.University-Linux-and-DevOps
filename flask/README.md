@@ -1,6 +1,20 @@
-##
+## Запуск
+```
+mkdir flask
+cd flask
+virtualenv -p /usr/bin/python3.8 flaskenv
+source flaskenv/bin/activate
+pip install -r requirements.txt
+python3 flaskapp.py
+```
 
+login: admin, password: admin
 
+http://127.0.0.1:5000/
+
+http://127.0.0.1:5000/files
+
+http://127.0.0.1:5000/upload
 
 ## Задание
 
