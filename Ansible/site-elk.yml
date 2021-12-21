@@ -1,0 +1,25 @@
+---
+#
+# Playbook для установки стэка ELK
+#
+- hosts: elkhead
+  environment:
+    PATH: "{{ ansible_env.PATH }}:/usr/share/logstash/vendor/jruby/bin"
+  remote_user: ubuntu
+  become: yes
+  become_user: root
+  roles:
+  - { role: java }
+  - { role: elasticsearch }
+  - { role: kibana }
+  - { role: logstash }
+  - { role: elastic_stack }
+  
+- hosts: elknodes
+  remote_user: ubuntu
+  become: yes
+  become_user: root
+  roles:
+  - { role: java }
+  - { role: elasticsearch }
+  - { role: elastic_stack }
