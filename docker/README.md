@@ -19,7 +19,7 @@
  ## Запуск
  ```
 $ cd flask
-$ ./start.sh
+$ ./run.sh
 $ docker login
 $ docker tag flaskapp macjei/flaskapp
 $ docker push macjei/flaskapp
